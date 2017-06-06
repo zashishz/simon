@@ -28,6 +28,7 @@ blocks.forEach(block => {
     block.addEventListener('click', function () {
         clearInterval(computerTimer);
         if (gameMode && startBtnClicked) {
+            computerTimer = setInterval(triggerError,(1000*computerMoves.length) + 5000);
             userMoves.push(this.classList[1]);
             console.log("userMoves", userMoves);
             //validate
@@ -35,6 +36,7 @@ blocks.forEach(block => {
             if (validationStatus) {
                 playSound(this.classList[1]);
                 if (computerMoves.length == userMoves.length) {
+                    clearInterval(computerTimer);
                     setTimeout(computerTurn, 1000);
                 }
             } else if(!strictMode) {
@@ -60,7 +62,7 @@ function reset() {
     computerMoves = [];
     document.getElementById('counter').textContent = 0;
     clearInterval(computerTimer);
-    startBtnClicked = false;
+    // startBtnClicked = false;
 }
 
 function getRandomBlock() {
@@ -72,7 +74,7 @@ function getRandomBlock() {
 // setTimeout(playSound, 1000, randomBlock);
 
 function computerTurn() {
-    gameMode = false;
+
     // push a random block in Array
     computerMoves.push(getRandomBlock());
 
@@ -82,17 +84,22 @@ function computerTurn() {
     //reset user moves
     userMoves = [];
     document.getElementById('counter').textContent = computerMoves.length;
-    computerTimer = setInterval(triggerError,5000);
+    computerTimer = setInterval(triggerError,(1000*computerMoves.length) + 5000);
     // check if pattern is correct
     // repeat;
-    gameMode = true;
 }
 
 function triggerError() {
     let errorAudio = document.querySelector(`audio[data-block="error"]`);
     errorAudio.play();
-    if(!strictMode) setTimeout(play,1000,computerMoves);
-    else { reset(); setTimeout(computerTurn,1000); }
+    userMoves = [];
+    if(!strictMode) { 
+        setTimeout(play,1000,computerMoves); 
+    }
+    else { 
+        reset(); 
+        setTimeout(computerTurn,1000); 
+    }
 }
 
 function play(moves) {
