@@ -97,7 +97,7 @@
 .strict-bulb {
     width: 8px;
     height: 8px;
-    background-color: red;
+    background-color: black;
     border: 3px solid;
     border-radius: 5px;
     position: absolute;
@@ -162,4 +162,14 @@
     font-size: 60px;
     left: 18px;
     top: -17px;
+    transition: all 0.4s;
+}
+
+.slider-play-on {
+    animation-direction: normal;
+    left: 45px;
+}
+
+.strict-bulb-on {
+    background: yellow;
 }
