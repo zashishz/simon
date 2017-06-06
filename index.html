@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simon Game</title>
+    <link rel="stylesheet" href="assets/css/reset.css">
+    <link href="https://fonts.googleapis.com/css?family=Concert+One|Lobster" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/simon.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="big-buttons">
+            <span class="block block1"></span><span class="block block2"></span><span class="block block3"></span><span class="block block4"></span>
+            <div class="controls">
+                <div class="heading">Simon Game</div>
+                <div id="counter">0</div>
+                <div class="label counter-label">count</div>
+                <div id="start-btn" class="btn btn-red"></div>
+                <div class="strict-bulb"></div>
+                <div class="label start-btn-label">start</div>
+                <div id="strict-btn" class="btn btn-yellow"></div>
+                <div class="label strict-btn-label">strict</div>
+                <div class="slider">
+                    <span class="label left-label">off</span>
+                    <span class="slider-control"></span>
+                    <span class="switch">.</span>
+                    <span class="label right-label">on</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio data-block="block1" src="assets/audio/simonSound1.mp3"></audio>
+    <audio data-block="block2" src="assets/audio/simonSound2.mp3"></audio>
+    <audio data-block="block3" src="assets/audio/simonSound3.mp3"></audio>
+    <audio data-block="block4" src="assets/audio/simonSound4.mp3"></audio>
+    <audio data-block="error" src="assets/audio/error.mp3"></audio>
+
+    <script src="assets/js/simon.js"></script>
+</body>
+
+</html>
