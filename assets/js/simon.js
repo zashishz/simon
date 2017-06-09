@@ -3,7 +3,8 @@ let userMoves = [];
 let gameMode = false;
 let startBtnClicked = false;
 let strictMode = false;
-let computerTimer;
+let timeouts = [];
+let intervals = [];
 
 function playSound(currentBlock) {
     let audio = document.querySelector(`audio[data-block="${currentBlock}"]`);
@@ -26,9 +27,9 @@ let blocks = document.querySelectorAll('.block');
 blocks.forEach(block => {
     block.addEventListener('transitionend', e => removeTransition(e));
     block.addEventListener('click', function () {
-        clearInterval(computerTimer);
+        clearAllIntervals();
         if (gameMode && startBtnClicked) {
-            computerTimer = setInterval(triggerError,(1000*computerMoves.length) + 5000);
+            intervals.push(setInterval(triggerError,(1000*computerMoves.length) + 5000));
             userMoves.push(this.classList[1]);
             console.log("userMoves", userMoves);
             //validate
@@ -36,7 +37,9 @@ blocks.forEach(block => {
             if (validationStatus) {
                 playSound(this.classList[1]);
                 if (computerMoves.length == userMoves.length) {
-                    clearInterval(computerTimer);
+                    timeouts = [];
+                    console.log('reset');
+                    clearAllIntervals();
                     setTimeout(computerTurn, 1000);
                 }
             } else if(!strictMode) {
@@ -61,8 +64,18 @@ function reset() {
     userMoves = [];
     computerMoves = [];
     document.getElementById('counter').textContent = 0;
-    clearInterval(computerTimer);
+    clearAllIntervals();
     // startBtnClicked = false;
+}
+
+function clearAllIntervals() {
+    intervals.forEach((interval) => clearInterval(interval));
+    intervals = [];
+}
+
+function clearAllTimeouts() {
+    timeouts.forEach((timeout) => clearTimeout(timeout));
+    timeouts = [];
 }
 
 function getRandomBlock() {
@@ -84,7 +97,7 @@ function computerTurn() {
     //reset user moves
     userMoves = [];
     document.getElementById('counter').textContent = computerMoves.length;
-    computerTimer = setInterval(triggerError,(1000*computerMoves.length) + 5000);
+    intervals.push(setInterval(triggerError,(1000*computerMoves.length) + 5000));
     // check if pattern is correct
     // repeat;
 }
@@ -93,6 +106,7 @@ function triggerError() {
     let errorAudio = document.querySelector(`audio[data-block="error"]`);
     errorAudio.play();
     userMoves = [];
+    clearAllTimeouts();
     if(!strictMode) { 
         setTimeout(play,1000,computerMoves); 
     }
@@ -105,9 +119,9 @@ function triggerError() {
 function play(moves) {
     // play playSound
     for (let i = 0; i < moves.length; i++) {
-        setTimeout(() => {
+        timeouts.push(setTimeout(() => {
             playSound(moves[i]);
-        }, i * 1000);
+        }, i * 1000));
     }
 }
 
@@ -121,6 +135,7 @@ slider.addEventListener('click', () => {
         switchBtn.classList.add('slider-play-on');
     } else {
         //move slider back to left
+        clearAllTimeouts();
         switchBtn.classList.remove('slider-play-on');
         strictBulb.classList.remove('strict-bulb-on');
         startBtnClicked = false;
